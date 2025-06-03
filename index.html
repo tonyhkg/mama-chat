@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>媽媽 Wiki - 新手母親支援平台</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            margin: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f8bbd9, #e879f9);
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(255,255,255,0.8);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #f8bbd9;
+            box-shadow: 0 0 0 3px rgba(248, 187, 217, 0.1);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8bbd9, #ddd6fe);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(248, 187, 217, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #a5b4fc, #c7d2fe);
+        }
+
+        .link-btn {
+            background: none;
+            color: #f8bbd9;
+            text-decoration: underline;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            padding: 5px;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .success {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .chat-container {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #fefbff;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.assistant {
+            text-align: left;
+        }
+
+        .message-bubble {
+            display: inline-block;
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, #f8bbd9, #ddd6fe);
+            color: white;
+        }
+
+        .message.assistant .message-bubble {
+            background: white;
+            color: #333;
+            border: 1px solid #f3e8ff;
+        }
+
+        .chat-input {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #f3e8ff;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+
+        .input-group button {
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #f8bbd9, #ddd6fe);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+        }
+
+        .user-info {
+            padding: 15px 20px;
+            background: rgba(248, 187, 217, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 登入/註冊表單 -->
+    <div class="container" id="authContainer">
+        <div class="header">
+            <h1>💕 媽媽 Wiki</h1>
+            <p>新手母親專屬的溫暖聊天空間</p>
+        </div>
+        <div class="content">
+            <!-- 登入表單 -->
+            <div id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">電郵地址</label>
+                    <input type="email" id="loginEmail" placeholder="請輸入您的電郵">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">密碼</label>
+                    <input type="password" id="loginPassword" placeholder="請輸入密碼">
+                </div>
+                <button class="btn" onclick="login()">登入</button>
+                <button class="link-btn" onclick="showRegister()">還沒有帳戶？立即註冊</button>
+                <button class="link-btn" onclick="showForgotPassword()">忘記密碼？</button>
+                <div id="loginError" class="error"></div>
+            </div>
+
+            <!-- 註冊表單 -->
+            <div id="registerForm" class="hidden">
+                <div class="form-group">
+                    <label for="registerName">姓名</label>
+                    <input type="text" id="registerName" placeholder="請輸入您的姓名">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">電郵地址</label>
+                    <input type="email" id="registerEmail" placeholder="請輸入電郵地址">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">密碼</label>
+                    <input type="password" id="registerPassword" placeholder="請設定密碼">
+                </div>
+                <button class="btn" onclick="register()">註冊</button>
+                <button class="link-btn" onclick="showLogin()">已有帳戶？返回登入</button>
+                <div id="registerError" class="error"></div>
+                <div id="registerSuccess" class="success"></div>
+            </div>
+
+            <!-- 忘記密碼表單 -->
+            <div id="forgotPasswordForm" class="hidden">
+                <div class="form-group">
+                    <label for="resetEmail">電郵地址</label>
+                    <input type="email" id="resetEmail" placeholder="請輸入您的電郵地址">
+                </div>
+                <button class="btn" onclick="resetPassword()">發送重設連結</button>
+                <button class="link-btn" onclick="showLogin()">返回登入</button>
+                <div id="resetError" class="error"></div>
+                <div id="resetSuccess" class="success"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 聊天介面 -->
+    <div class="container chat-container hidden" id="chatContainer">
+        <div class="header">
+            <h1>💕 媽媽 Wiki</h1>
+            <p>我是您的育兒小助手，隨時為您提供支援</p>
+        </div>
+        <div class="user-info">
+            <span id="userWelcome">歡迎，媽媽！</span>
+            <button class="logout-btn" onclick="logout()">登出</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message assistant">
+                <div class="message-bubble">
+                    👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
+                </div>
+            </div>
+        </div>
+        <div class="chat-input">
+            <div class="input-group">
+                <input type="text" id="messageInput" placeholder="分享您的心情或育兒問題..." onkeypress="handleKeyPress(event)">
+                <button onclick="sendMessage()">發送</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Supabase 配置
+        const supabaseUrl = 'https://znyzlkdockzfocloajhm.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueXpsa2RvY2t6Zm9jbG9hamhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4ODgxMzQsImV4cCI6MjA2NDQ2NDEzNH0.JiFQjIHJK37pSkR1oEy6hyuFG-CczNI-E-Z7uaKTje4';
+        
+        let supabaseClient = null;
+        
+        // 初始化 Supabase 客戶端
+        function initSupabase() {
+            try {
+                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
+                    supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+                    console.log('Supabase 初始化成功');
+                    return true;
+                } else {
+                    console.error('Supabase 對象未載入');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Supabase 初始化失敗:', error);
+                return false;
+            }
+        }
+
+        // OpenAI 配置 - 改為使用 Vercel API 代理
+        const API_BASE_URL = window.location.origin; // 使用當前域名
+
+        let currentUser = null;
+        let currentThread = null;
+
+        // 檢查用戶登入狀態
+        async function checkAuth() {
+            if (!supabaseClient) {
+                console.log('Supabase 客戶端未初始化');
+                return;
+            }
+            
+            try {
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                if (error) {
+                    console.error('Auth check error:', error);
+                    return;
+                }
+                if (user) {
+                    currentUser = user;
+                    await loadUserChatHistory();
+                    showChat();
+                    document.getElementById('userWelcome').textContent = `歡迎，${user.user_metadata?.name || user.email || '媽媽'}！`;
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+            }
+        }
+
+        // 顯示不同表單
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('forgotPasswordForm').classList.add('hidden');
+            clearErrors();
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('forgotPasswordForm').classList.add('hidden');
+            clearErrors();
+        }
+
+        function showForgotPassword() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('forgotPasswordForm').classList.remove('hidden');
+            clearErrors();
+        }
+
+        function showChat() {
+            document.getElementById('authContainer').classList.add('hidden');
+            document.getElementById('chatContainer').classList.remove('hidden');
+        }
+
+        function showAuth() {
+            document.getElementById('authContainer').classList.remove('hidden');
+            document.getElementById('chatContainer').classList.add('hidden');
+        }
+
+        function clearErrors() {
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('registerError').textContent = '';
+            document.getElementById('resetError').textContent = '';
+            document.getElementById('registerSuccess').textContent = '';
+            document.getElementById('resetSuccess').textContent = '';
+        }
+
+        // 登入功能
+        async function login() {
+            if (!supabaseClient) {
+                document.getElementById('loginError').textContent = 'Supabase 未初始化，請重新載入頁面';
+                return;
+            }
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                document.getElementById('loginError').textContent = '請填寫所有欄位';
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) {
+                    document.getElementById('loginError').textContent = '登入失敗：' + error.message;
+                    console.error('Login error:', error);
+                } else if (data.user) {
+                    currentUser = data.user;
+                    showChat();
+                    document.getElementById('userWelcome').textContent = `歡迎，${data.user.user_metadata?.name || data.user.email || '媽媽'}！`;
+                }
+            } catch (error) {
+                document.getElementById('loginError').textContent = '登入時發生錯誤：' + error.message;
+                console.error('Login exception:', error);
+            }
+        }
+
+        // 註冊功能
+        async function register() {
+            if (!supabaseClient) {
+                document.getElementById('registerError').textContent = 'Supabase 未初始化，請重新載入頁面';
+                return;
+            }
+            
+            const name = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+
+            if (!name || !email || !password) {
+                document.getElementById('registerError').textContent = '請填寫所有欄位';
+                return;
+            }
+
+            if (password.length < 6) {
+                document.getElementById('registerError').textContent = '密碼至少需要6個字符';
+                return;
+            }
+
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: {
+                            name: name
+                        }
+                    }
+                });
+
+                if (error) {
+                    document.getElementById('registerError').textContent = '註冊失敗：' + error.message;
+                    console.error('Registration error:', error);
+                } else {
+                    document.getElementById('registerSuccess').textContent = '註冊成功！請檢查您的電郵以確認帳戶。';
+                    // 清空表單
+                    document.getElementById('registerName').value = '';
+                    document.getElementById('registerEmail').value = '';
+                    document.getElementById('registerPassword').value = '';
+                    setTimeout(() => showLogin(), 3000);
+                }
+            } catch (error) {
+                document.getElementById('registerError').textContent = '註冊時發生錯誤：' + error.message;
+                console.error('Registration exception:', error);
+            }
+        }
+
+        // 重設密碼
+        async function resetPassword() {
+            if (!supabaseClient) {
+                document.getElementById('resetError').textContent = 'Supabase 未初始化，請重新載入頁面';
+                return;
+            }
+            
+            const email = document.getElementById('resetEmail').value.trim();
+
+            if (!email) {
+                document.getElementById('resetError').textContent = '請輸入電郵地址';
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin
+                });
+
+                if (error) {
+                    document.getElementById('resetError').textContent = '發送失敗：' + error.message;
+                    console.error('Password reset error:', error);
+                } else {
+                    document.getElementById('resetSuccess').textContent = '重設連結已發送到您的電郵';
+                    document.getElementById('resetEmail').value = '';
+                }
+            } catch (error) {
+                document.getElementById('resetError').textContent = '發送時發生錯誤：' + error.message;
+                console.error('Password reset exception:', error);
+            }
+        }
+
+        // 登出功能
+        async function logout() {
+            if (!supabaseClient) {
+                console.error('Supabase 客戶端未初始化');
+                return;
+            }
+            
+            try {
+                const { error } = await supabaseClient.auth.signOut();
+                if (error) {
+                    console.error('Logout error:', error);
+                }
+            } catch (error) {
+                console.error('Logout exception:', error);
+            }
+            
+            currentUser = null;
+            currentThread = null;
+            showAuth();
+            document.getElementById('chatMessages').innerHTML = `
+                <div class="message assistant">
+                    <div class="message-bubble">
+                        👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
+                    </div>
+                </div>
+            `;
+        }
+
+        // 發送訊息
+        async function sendMessage() {
+            if (!currentUser) {
+                alert('請先登入才能使用聊天功能');
+                return;
+            }
+
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // 顯示用戶訊息
+            addMessage(message, 'user');
+            input.value = '';
+
+            // 顯示載入中
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message assistant';
+            loadingDiv.innerHTML = '<div class="message-bubble">正在思考中...</div>';
+            loadingDiv.id = 'loading-message';
+            document.getElementById('chatMessages').appendChild(loadingDiv);
+            scrollToBottom();
+
+            try {
+                // 檢查是否有現有線程
+                if (!currentThread) {
+                    console.log('創建新的對話線程...');
+                    currentThread = await createThread();
+                    await saveUserThread(currentThread);
+                }
+
+                // 發送訊息到 OpenAI Assistant
+                const response = await sendToAssistant(message);
+                
+                // 移除載入訊息
+                const loadingElement = document.getElementById('loading-message');
+                if (loadingElement) {
+                    loadingElement.remove();
+                }
+                
+                // 顯示 AI 回覆
+                addMessage(response, 'assistant');
+                
+                // 保存對話記錄到 Supabase
+                await saveChatToSupabase(message, response);
+                
+            } catch (error) {
+                const loadingElement = document.getElementById('loading-message');
+                if (loadingElement) {
+                    loadingElement.remove();
+                }
+                addMessage('抱歉，我現在無法回應。請檢查網絡連接或稍後再試。', 'assistant');
+                console.error('Error details:', error);
+            }
+        }
+
+        // 創建新的對話線程 - 使用 Vercel API
+        async function createThread() {
+            try {
+                console.log('正在創建新的對話線程...');
+                const response = await fetch(`${API_BASE_URL}/api/openai-proxy`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'createThread'
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('創建線程失敗:', response.status, errorData);
+                    throw new Error(`HTTP ${response.status}: ${errorData.error || 'Unknown error'}`);
+                }
+
+                const thread = await response.json();
+                console.log('線程創建成功:', thread.id);
+                return thread.id;
+            } catch (error) {
+                console.error('創建線程時發生錯誤:', error);
+                throw error;
+            }
+        }
+
+        // 發送訊息到 Assistant - 使用 Vercel API
+        async function sendToAssistant(message) {
+            try {
+                console.log('發送訊息到 Assistant:', message);
+                console.log('使用線程 ID:', currentThread);
+                
+                const response = await fetch(`${API_BASE_URL}/api/openai-proxy`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: 'sendMessage',
+                        threadId: currentThread,
+                        message: message,
+                        assistantId: 'asst_VHmtDlk5bk8XcPQL6JsqNwHo'
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('發送訊息失敗:', response.status, errorData);
+                    throw new Error(`發送訊息失敗: ${errorData.error || 'Unknown error'}`);
+                }
+
+                const result = await response.json();
+                console.log('Assistant 回覆:', result.response);
+                
+                return result.response;
+            } catch (error) {
+                console.error('sendToAssistant 錯誤:', error);
+                throw error;
+            }
+        }
+
+        // 保存用戶的線程 ID 到 Supabase
+        async function saveUserThread(threadId) {
+            if (!supabaseClient || !currentUser) return;
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('user_threads')
+                    .upsert({
+                        user_id: currentUser.id,
+                        thread_id: threadId,
+                        updated_at: new Date().toISOString()
+                    });
+                
+                if (error) {
+                    console.error('保存線程 ID 失敗:', error);
+                } else {
+                    console.log('線程 ID 已保存到 Supabase');
+                }
+            } catch (error) {
+                console.error('保存線程 ID 時發生錯誤:', error);
+            }
+        }
+
+        // 從 Supabase 載入用戶的線程 ID
+        async function loadUserThread() {
+            if (!supabaseClient || !currentUser) return null;
+            
+            try {
+                const { data, error } = await supabaseClient
+                    .from('user_threads')
+                    .select('thread_id')
+                    .eq('user_id', currentUser.id)
+                    .single();
+                
+                if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
+                    console.error('載入線程 ID 失敗:', error);
+                    return null;
+                }
+                
+                return data?.thread_id || null;
+            } catch (error) {
+                console.error('載入線程 ID 時發生錯誤:', error);
+                return null;
+            }
+        }
+
+        // 保存聊天記錄到 Supabase
+        async function saveChatToSupabase(userMessage, assistantReply) {
+            if (!supabaseClient || !currentUser) return;
+            
+            try {
+                const { error } = await supabaseClient
+                    .from('chat_history')
+                    .insert({
+                        user_id: currentUser.id,
+                        thread_id: currentThread,
+                        user_message: userMessage,
+                        assistant_reply: assistantReply,
+                        created_at: new Date().toISOString()
+                    });
+                
+                if (error) {
+                    console.error('保存聊天記錄失敗:', error);
+                } else {
+                    console.log('聊天記錄已保存到 Supabase');
+                }
+            } catch (error) {
+                console.error('保存聊天記錄時發生錯誤:', error);
+            }
+        }
+
+        // 從 Supabase 載入用戶聊天記錄
+        async function loadUserChatHistory() {
+            if (!supabaseClient || !currentUser) return;
+            
+            try {
+                // 首先載入用戶的線程 ID
+                currentThread = await loadUserThread();
+                console.log('載入的線程 ID:', currentThread);
+                
+                // 載入聊天記錄
+                const { data, error } = await supabaseClient
+                    .from('chat_history')
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('created_at', { ascending: true });
+                
+                if (error) {
+                    console.error('載入聊天記錄失敗:', error);
+                    return;
+                }
+                
+                // 清空現有的歡迎訊息
+                document.getElementById('chatMessages').innerHTML = '';
+                
+                if (data && data.length > 0) {
+                    console.log(`載入了 ${data.length} 條聊天記錄`);
+                    
+                    // 重新顯示聊天記錄
+                    data.forEach(entry => {
+                        addMessage(entry.user_message, 'user');
+                        addMessage(entry.assistant_reply, 'assistant');
+                    });
+                } else {
+                    // 沒有聊天記錄，顯示歡迎訊息
+                    addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
+                }
+            } catch (error) {
+                console.error('載入聊天記錄時發生錯誤:', error);
+                // 如果載入失敗，顯示歡迎訊息
+                addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
+}
+        }
+
+        // 添加訊息到聊天
+        function addMessage(message, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // 滾動到底部
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // 按 Enter 發送訊息
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 等待 Supabase 載入並初始化
+            let retryCount = 0;
+            const maxRetries = 10;
+            
+            const waitForSupabase = async () => {
+                while (retryCount < maxRetries) {
+                    if (typeof window.supabase !== 'undefined') {
+                        if (initSupabase()) {
+                            console.log('Supabase 初始化成功');
+                            break;
+                        }
+                    }
+                    retryCount++;
+                    console.log(`等待 Supabase 載入... (${retryCount}/${maxRetries})`);
+                    await new Promise(resolve => setTimeout(resolve, 200));
+                }
+                
+                if (retryCount >= maxRetries) {
+                    console.error('Supabase 載入失敗');
+                    document.getElementById('loginError').textContent = 'Supabase 載入失敗，請重新載入頁面';
+                    return;
+                }
+                
+                // Supabase 初始化成功後檢查認證狀態
+                await checkAuth();
+                
+                // 監聽認證狀態變化
+                if (supabaseClient) {
+                    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+                        console.log('Auth state changed:', event, session);
+                        if (event === 'SIGNED_IN' && session?.user) {
+                            currentUser = session.user;
+                            await loadUserChatHistory();
+                            showChat();
+                            document.getElementById('userWelcome').textContent = `歡迎，${session.user.user_metadata?.name || session.user.email || '媽媽'}！`;
+                        } else if (event === 'SIGNED_OUT') {
+                            currentUser = null;
+                            currentThread = null;
+                            showAuth();
+                            // 重置聊天記錄
+                            document.getElementById('chatMessages').innerHTML = `
+                                <div class="message assistant">
+                                    <div class="message-bubble">
+                                        👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
+                                    </div>
+                                </div>
+                            `;
+                        }
+                    });
+                }
+            };
+            
+            await waitForSupabase();
+        });
+    </script>
+</body>
+</html>
