@@ -1,0 +1,968 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.6">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="zh-HK"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;媽媽 Wiki - 新手母親支援平台&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/@supabase/supabase-js@2"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>* {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-sizing: border-box;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Microsoft YaHei', Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>min-height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 400px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255, 255, 255, 0.95);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>backdrop-filter: blur(10px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 20px 40px rgba(0,0,0,0.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.header {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #f8bbd9, #e879f9);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.header h1 {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 24px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-shadow: 0 2px 4px rgba(0,0,0,0.2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.header p {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.9;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.content {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 30px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.form-group {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.form-group label {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #555;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 500;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.form-group input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #e9ecef;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(255,255,255,0.8);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.form-group input:focus {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>outline: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-color: #f8bbd9;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 0 0 3px rgba(248, 187, 217, 0.1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #f8bbd9, #ddd6fe);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transition: all 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn:hover {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: translateY(-2px);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 10px 25px rgba(248, 187, 217, 0.3);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn:disabled {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>opacity: 0.6;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: not-allowed;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>transform: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.btn-secondary {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #a5b4fc, #c7d2fe);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.link-btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #f8bbd9;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-decoration: underline;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.error {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #e74c3c;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.success {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #27ae60;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 14px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chat-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 80vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chat-messages {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #fefbff;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.message {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-bottom: 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>animation: fadeIn 0.3s ease;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.message.user {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: right;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.message.assistant {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: left;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.message-bubble {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: inline-block;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-width: 80%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 18px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 18px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>word-wrap: break-word;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>line-height: 1.4;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.message.user .message-bubble {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #f8bbd9, #ddd6fe);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.message.assistant .message-bubble {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #333;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 1px solid #f3e8ff;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.chat-input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-top: 1px solid #e9ecef;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-group {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gap: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-group input {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex: 1;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #f3e8ff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 25px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.input-group button {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 12px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: linear-gradient(135deg, #f8bbd9, #ddd6fe);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 25px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-weight: 600;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.loading {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #666;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.user-info {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 15px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: rgba(248, 187, 217, 0.1);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: space-between;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.logout-btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #e74c3c;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: none;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 8px 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 5px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 12px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>@keyframes fadeIn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>from { opacity: 0; transform: translateY(10px); }</p>
+<p class="p1"><span class="Apple-converted-space">            </span>to { opacity: 1; transform: translateY(0); }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>.hidden {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 登入/註冊表單 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container" id="authContainer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;💕 媽媽 Wiki&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;新手母親專屬的溫暖聊天空間&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="content"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 登入表單 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="loginForm"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="loginEmail"&gt;電郵地址&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="email" id="loginEmail" placeholder="請輸入您的電郵"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="loginPassword"&gt;密碼&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="password" id="loginPassword" placeholder="請輸入密碼"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="btn" onclick="login()"&gt;登入&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="link-btn" onclick="showRegister()"&gt;還沒有帳戶？立即註冊&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="link-btn" onclick="showForgotPassword()"&gt;忘記密碼？&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="loginError" class="error"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 註冊表單 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="registerForm" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="registerName"&gt;姓名&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="text" id="registerName" placeholder="請輸入您的姓名"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="registerEmail"&gt;電郵地址&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="email" id="registerEmail" placeholder="請輸入電郵地址"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="registerPassword"&gt;密碼&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="password" id="registerPassword" placeholder="請設定密碼"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="btn" onclick="register()"&gt;註冊&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="link-btn" onclick="showLogin()"&gt;已有帳戶？返回登入&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="registerError" class="error"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="registerSuccess" class="success"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;!-- 忘記密碼表單 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="forgotPasswordForm" class="hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="form-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;label for="resetEmail"&gt;電郵地址&lt;/label&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;input type="email" id="resetEmail" placeholder="請輸入您的電郵地址"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="btn" onclick="resetPassword()"&gt;發送重設連結&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button class="link-btn" onclick="showLogin()"&gt;返回登入&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="resetError" class="error"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div id="resetSuccess" class="success"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- 聊天介面 --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="container chat-container hidden" id="chatContainer"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="header"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;h1&gt;💕 媽媽 Wiki&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;p&gt;我是您的育兒小助手，隨時為您提供支援&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="user-info"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;span id="userWelcome"&gt;歡迎，媽媽！&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;button class="logout-btn" onclick="logout()"&gt;登出&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="chat-messages" id="chatMessages"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="message assistant"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="message-bubble"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div class="chat-input"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div class="input-group"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;input type="text" id="messageInput" placeholder="分享您的心情或育兒問題..." onkeypress="handleKeyPress(event)"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button onclick="sendMessage()"&gt;發送&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Supabase 配置</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const supabaseUrl = 'https://znyzlkdockzfocloajhm.supabase.co';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueXpsa2RvY2t6Zm9jbG9hamhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4ODgxMzQsImV4cCI6MjA2NDQ2NDEzNH0.JiFQjIHJK37pSkR1oEy6hyuFG-CczNI-E-Z7uaTKTje4';</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 等待 Supabase 載入</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let supabaseClient;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 初始化 Supabase 客戶端</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function initSupabase() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const { createClient } = window.supabase;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>supabaseClient = createClient(supabaseUrl, supabaseKey);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// OpenAI 配置</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const OPENAI_API_KEY = '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';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const ASSISTANT_ID = 'asst_VHmtDlk5bk8XcPQL6JsqNwHo';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentUser = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentThread = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 檢查用戶登入狀態</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function checkAuth() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Supabase 客戶端未初始化');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { data: { user }, error } = await supabaseClient.auth.getUser();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Auth check error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (user) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentUser = user;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>await loadUserChatHistory();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showChat();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('userWelcome').textContent = `歡迎，${user.user_metadata?.name || user.email || '媽媽'}！`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Auth check failed:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 檢查用戶登入狀態</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function checkAuth() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Supabase 客戶端未初始化');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { data: { user }, error } = await supabaseClient.auth.getUser();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Auth check error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (user) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentUser = user;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showChat();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('userWelcome').textContent = `歡迎，${user.user_metadata?.name || user.email || '媽媽'}！`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Auth check failed:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 顯示不同表單</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showLogin() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginForm').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('forgotPasswordForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>clearErrors();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showRegister() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerForm').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('forgotPasswordForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>clearErrors();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showForgotPassword() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('forgotPasswordForm').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>clearErrors();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showChat() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('authContainer').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('chatContainer').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showAuth() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('authContainer').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('chatContainer').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function clearErrors() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginError').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerError').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('resetError').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerSuccess').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('resetSuccess').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showLogin() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginForm').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('forgotPasswordForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>clearErrors();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showRegister() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerForm').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('forgotPasswordForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>clearErrors();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showForgotPassword() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerForm').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('forgotPasswordForm').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>clearErrors();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showChat() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('authContainer').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('chatContainer').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function showAuth() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('authContainer').classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('chatContainer').classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function clearErrors() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('loginError').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerError').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('resetError').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('registerSuccess').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('resetSuccess').textContent = '';</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 登入功能</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function login() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('loginError').textContent = 'Supabase 未初始化，請重新載入頁面';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const email = document.getElementById('loginEmail').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const password = document.getElementById('loginPassword').value;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!email || !password) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('loginError').textContent = '請填寫所有欄位';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { data, error } = await supabaseClient.auth.signInWithPassword({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>email: email,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>password: password</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('loginError').textContent = '登入失敗：' + error.message;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Login error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (data.user) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentUser = data.user;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>showChat();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('userWelcome').textContent = `歡迎，${data.user.user_metadata?.name || data.user.email || '媽媽'}！`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('loginError').textContent = '登入時發生錯誤：' + error.message;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Login exception:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 註冊功能</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function register() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('registerError').textContent = 'Supabase 未初始化，請重新載入頁面';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const name = document.getElementById('registerName').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const email = document.getElementById('registerEmail').value.trim();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const password = document.getElementById('registerPassword').value;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!name || !email || !password) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('registerError').textContent = '請填寫所有欄位';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (password.length &lt; 6) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('registerError').textContent = '密碼至少需要6個字符';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { data, error } = await supabaseClient.auth.signUp({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>email: email,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>password: password,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>name: name</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('registerError').textContent = '註冊失敗：' + error.message;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Registration error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('registerSuccess').textContent = '註冊成功！請檢查您的電郵以確認帳戶。';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// 清空表單</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('registerName').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('registerEmail').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('registerPassword').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>setTimeout(() =&gt; showLogin(), 3000);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('registerError').textContent = '註冊時發生錯誤：' + error.message;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Registration exception:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 重設密碼</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function resetPassword() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('resetError').textContent = 'Supabase 未初始化，請重新載入頁面';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const email = document.getElementById('resetEmail').value.trim();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!email) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('resetError').textContent = '請輸入電郵地址';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>redirectTo: window.location.origin</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('resetError').textContent = '發送失敗：' + error.message;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Password reset error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('resetSuccess').textContent = '重設連結已發送到您的電郵';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('resetEmail').value = '';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('resetError').textContent = '發送時發生錯誤：' + error.message;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Password reset exception:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 登出功能</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function logout() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Supabase 客戶端未初始化');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { error } = await supabaseClient.auth.signOut();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Logout error:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Logout exception:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentUser = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentThread = null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>showAuth();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('chatMessages').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;div class="message assistant"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="message-bubble"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 發送訊息</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function sendMessage() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!currentUser) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>alert('請先登入才能使用聊天功能');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const input = document.getElementById('messageInput');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const message = input.value.trim();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!message) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 顯示用戶訊息</p>
+<p class="p1"><span class="Apple-converted-space">            </span>addMessage(message, 'user');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>input.value = '';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 顯示載入中</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const loadingDiv = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingDiv.className = 'message assistant';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingDiv.innerHTML = '&lt;div class="message-bubble"&gt;正在思考中...&lt;/div&gt;';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>loadingDiv.id = 'loading-message';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('chatMessages').appendChild(loadingDiv);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>scrollToBottom();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 檢查是否有現有線程</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!currentThread) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log('創建新的對話線程...');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>currentThread = await createThread();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>await saveUserThread(currentThread);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 發送訊息到 OpenAI Assistant</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const response = await sendToAssistant(message);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 移除載入訊息</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const loadingElement = document.getElementById('loading-message');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (loadingElement) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>loadingElement.remove();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 顯示 AI 回覆</p>
+<p class="p1"><span class="Apple-converted-space">                </span>addMessage(response, 'assistant');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 保存對話記錄到 Supabase</p>
+<p class="p1"><span class="Apple-converted-space">                </span>await saveChatToSupabase(message, response);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const loadingElement = document.getElementById('loading-message');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (loadingElement) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>loadingElement.remove();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>addMessage('抱歉，我現在無法回應。請檢查網絡連接或稍後再試。', 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Error details:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 創建新的對話線程 - 使用 Vercel API</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function createThread() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('正在創建新的對話線程...');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const response = await fetch(`${API_BASE_URL}/api/openai-proxy`, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>headers: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'Content-Type': 'application/json'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>action: 'createThread'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>})</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const errorData = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('創建線程失敗:', response.status, errorData);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error(`HTTP ${response.status}: ${errorData.error || 'Unknown error'}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const thread = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('線程創建成功:', thread.id);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return thread.id;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('創建線程時發生錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>throw error;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 發送訊息到 Assistant - 使用 Vercel API</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function sendToAssistant(message) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('發送訊息到 Assistant:', message);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('使用線程 ID:', currentThread);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const response = await fetch(`${API_BASE_URL}/api/openai-proxy`, {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>method: 'POST',</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>headers: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>'Content-Type': 'application/json'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>body: JSON.stringify({</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>action: 'sendMessage',</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>threadId: currentThread,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>message: message,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>assistantId: 'asst_VHmtDlk5bk8XcPQL6JsqNwHo'</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>})</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!response.ok) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const errorData = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('發送訊息失敗:', response.status, errorData);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>throw new Error(`發送訊息失敗: ${errorData.error || 'Unknown error'}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const result = await response.json();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('Assistant 回覆:', result.response);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>return result.response;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('sendToAssistant 錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>throw error;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 保存用戶的線程 ID 到 Supabase</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function saveUserThread(threadId) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient || !currentUser) return;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { error } = await supabaseClient</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.from('user_threads')</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.upsert({</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>user_id: currentUser.id,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>thread_id: threadId,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>updated_at: new Date().toISOString()</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('保存線程 ID 失敗:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log('線程 ID 已保存到 Supabase');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('保存線程 ID 時發生錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 從 Supabase 載入用戶的線程 ID</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function loadUserThread() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient || !currentUser) return null;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { data, error } = await supabaseClient</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.from('user_threads')</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.select('thread_id')</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.eq('user_id', currentUser.id)</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.single();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error &amp;&amp; error.code !== 'PGRST116') { // PGRST116 = no rows returned</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('載入線程 ID 失敗:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>return data?.thread_id || null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('載入線程 ID 時發生錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return null;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 保存聊天記錄到 Supabase</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function saveChatToSupabase(userMessage, assistantReply) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient || !currentUser) return;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { error } = await supabaseClient</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.from('chat_history')</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.insert({</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>user_id: currentUser.id,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>thread_id: currentThread,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>user_message: userMessage,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>assistant_reply: assistantReply,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>created_at: new Date().toISOString()</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('保存聊天記錄失敗:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log('聊天記錄已保存到 Supabase');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('保存聊天記錄時發生錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 從 Supabase 載入用戶聊天記錄</p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function loadUserChatHistory() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (!supabaseClient || !currentUser) return;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 首先載入用戶的線程 ID</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentThread = await loadUserThread();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.log('載入的線程 ID:', currentThread);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 載入聊天記錄</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const { data, error } = await supabaseClient</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.from('chat_history')</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.select('*')</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.eq('user_id', currentUser.id)</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.order('created_at', { ascending: true });</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('載入聊天記錄失敗:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 清空現有的歡迎訊息</p>
+<p class="p1"><span class="Apple-converted-space">                </span>document.getElementById('chatMessages').innerHTML = '';</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (data &amp;&amp; data.length &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log(`載入了 ${data.length} 條聊天記錄`);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// 重新顯示聊天記錄</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>data.forEach(entry =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>addMessage(entry.user_message, 'user');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>addMessage(entry.assistant_reply, 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// 沒有聊天記錄，顯示歡迎訊息</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('載入聊天記錄時發生錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 如果載入失敗，顯示歡迎訊息</p>
+<p class="p1"><span class="Apple-converted-space">                </span>addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}'user');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>addMessage(entry.assistantReply, 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// 如果有線程 ID，恢復它</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (currentSessionHistory[0].threadId) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>currentThread = currentSessionHistory[0].threadId;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>localStorage.setItem('mama_wiki_thread', currentThread);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// 沒有聊天記錄，顯示歡迎訊息</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('載入聊天記錄時發生錯誤:', error);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 如果載入失敗，顯示歡迎訊息</p>
+<p class="p1"><span class="Apple-converted-space">                </span>addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 添加訊息到聊天</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function addMessage(message, sender) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const chatMessages = document.getElementById('chatMessages');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const messageDiv = document.createElement('div');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>messageDiv.className = `message ${sender}`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>messageDiv.innerHTML = `&lt;div class="message-bubble"&gt;${message}&lt;/div&gt;`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>chatMessages.appendChild(messageDiv);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>scrollToBottom();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 滾動到底部</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function scrollToBottom() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const chatMessages = document.getElementById('chatMessages');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>chatMessages.scrollTop = chatMessages.scrollHeight;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 按 Enter 發送訊息</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function handleKeyPress(event) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (event.key === 'Enter') {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>sendMessage();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// 初始化</p>
+<p class="p1"><span class="Apple-converted-space">        </span>document.addEventListener('DOMContentLoaded', async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// 等待 Supabase 載入並初始化</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let retryCount = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const maxRetries = 10;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const waitForSupabase = async () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>while (retryCount &lt; maxRetries) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (typeof window.supabase !== 'undefined') {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (initSupabase()) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>console.log('Supabase 初始化成功');</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>break;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>retryCount++;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log(`等待 Supabase 載入... (${retryCount}/${maxRetries})`);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>await new Promise(resolve =&gt; setTimeout(resolve, 200));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (retryCount &gt;= maxRetries) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.error('Supabase 載入失敗');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>document.getElementById('loginError').textContent = 'Supabase 載入失敗，請重新載入頁面';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Supabase 初始化成功後檢查認證狀態</p>
+<p class="p1"><span class="Apple-converted-space">                </span>await checkAuth();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// 監聽認證狀態變化</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (supabaseClient) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>supabaseClient.auth.onAuthStateChange(async (event, session) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>console.log('Auth state changed:', event, session);</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if (event === 'SIGNED_IN' &amp;&amp; session?.user) {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>currentUser = session.user;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>await loadUserChatHistory();</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>showChat();</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>document.getElementById('userWelcome').textContent = `歡迎，${session.user.user_metadata?.name || session.user.email || '媽媽'}！`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>} else if (event === 'SIGNED_OUT') {</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>currentUser = null;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>currentThread = null;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>showAuth();</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>// 重置聊天記錄</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>document.getElementById('chatMessages').innerHTML = `</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;div class="message assistant"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;div class="message-bubble"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                        </span>👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕</p>
+<p class="p1"><span class="Apple-converted-space">                                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                                </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                            </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>await waitForSupabase();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
