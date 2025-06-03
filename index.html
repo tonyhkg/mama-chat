@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>媽媽 Wiki - 新手母親支援平台</title>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -180,6 +181,43 @@
             border: 1px solid #f3e8ff;
         }
 
+        .message.assistant .message-bubble h1,
+        .message.assistant .message-bubble h2,
+        .message.assistant .message-bubble h3 {
+            color: #8b5cf6;
+            margin: 10px 0 5px 0;
+            font-size: 1.1em;
+        }
+
+        .message.assistant .message-bubble strong {
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .message.assistant .message-bubble ul,
+        .message.assistant .message-bubble ol {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+
+        .message.assistant .message-bubble li {
+            margin: 4px 0;
+            line-height: 1.5;
+        }
+
+        .message.assistant .message-bubble p {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+
+        .message.assistant .message-bubble code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
         .chat-input {
             padding: 20px;
             background: white;
@@ -329,29 +367,20 @@
     <script>
         // Supabase 配置
         const supabaseUrl = 'https://znyzlkdockzfocloajhm.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueXpsa2RvY2t6Zm9jbG9hamhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4ODgxMzQsImV4cCI6MjA2NDQ2NDEzNH0.JiFQjIHJK37pSkR1oEy6hyuFG-CczNI-E-Z7uaKTje4';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueXpsa2RvY2t6Zm9jbG9hamhtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDg4ODgxMzQsImV4cCI6MjA2NDQ2NDEzNH0.JiFQjIHJK37pSkR1oEy6hyuFG-CczNI-E-Z7uaTKTje4';
         
-        let supabaseClient = null;
+        // 等待 Supabase 載入
+        let supabaseClient;
         
         // 初始化 Supabase 客戶端
         function initSupabase() {
-            try {
-                if (typeof window.supabase !== 'undefined' && window.supabase.createClient) {
-                    supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-                    console.log('Supabase 初始化成功');
-                    return true;
-                } else {
-                    console.error('Supabase 對象未載入');
-                    return false;
-                }
-            } catch (error) {
-                console.error('Supabase 初始化失敗:', error);
-                return false;
-            }
+            const { createClient } = window.supabase;
+            supabaseClient = createClient(supabaseUrl, supabaseKey);
         }
 
-        // OpenAI 配置 - 改為使用 Vercel API 代理
-        const API_BASE_URL = window.location.origin; // 使用當前域名
+        // OpenAI 配置
+        const OPENAI_API_KEY = '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';
+        const ASSISTANT_ID = 'asst_VHmtDlk5bk8XcPQL6JsqNwHo';
 
         let currentUser = null;
         let currentThread = null;
@@ -380,7 +409,68 @@
             }
         }
 
+        // 檢查用戶登入狀態
+        async function checkAuth() {
+            if (!supabaseClient) {
+                console.log('Supabase 客戶端未初始化');
+                return;
+            }
+            
+            try {
+                const { data: { user }, error } = await supabaseClient.auth.getUser();
+                if (error) {
+                    console.error('Auth check error:', error);
+                    return;
+                }
+                if (user) {
+                    currentUser = user;
+                    showChat();
+                    document.getElementById('userWelcome').textContent = `歡迎，${user.user_metadata?.name || user.email || '媽媽'}！`;
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+            }
+        }
+
         // 顯示不同表單
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('forgotPasswordForm').classList.add('hidden');
+            clearErrors();
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.remove('hidden');
+            document.getElementById('forgotPasswordForm').classList.add('hidden');
+            clearErrors();
+        }
+
+        function showForgotPassword() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('registerForm').classList.add('hidden');
+            document.getElementById('forgotPasswordForm').classList.remove('hidden');
+            clearErrors();
+        }
+
+        function showChat() {
+            document.getElementById('authContainer').classList.add('hidden');
+            document.getElementById('chatContainer').classList.remove('hidden');
+        }
+
+        function showAuth() {
+            document.getElementById('authContainer').classList.remove('hidden');
+            document.getElementById('chatContainer').classList.add('hidden');
+        }
+
+        function clearErrors() {
+            document.getElementById('loginError').textContent = '';
+            document.getElementById('registerError').textContent = '';
+            document.getElementById('resetError').textContent = '';
+            document.getElementById('registerSuccess').textContent = '';
+            document.getElementById('resetSuccess').textContent = '';
+        }
         function showLogin() {
             document.getElementById('loginForm').classList.remove('hidden');
             document.getElementById('registerForm').classList.add('hidden');
@@ -796,15 +886,40 @@
                 console.error('載入聊天記錄時發生錯誤:', error);
                 // 如果載入失敗，顯示歡迎訊息
                 addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
-}
+            }
+        }'user');
+                        addMessage(entry.assistantReply, 'assistant');
+                    });
+                    
+                    // 如果有線程 ID，恢復它
+                    if (currentSessionHistory[0].threadId) {
+                        currentThread = currentSessionHistory[0].threadId;
+                        localStorage.setItem('mama_wiki_thread', currentThread);
+                    }
+                } else {
+                    // 沒有聊天記錄，顯示歡迎訊息
+                    addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
+                }
+            } catch (error) {
+                console.error('載入聊天記錄時發生錯誤:', error);
+                // 如果載入失敗，顯示歡迎訊息
+                addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
+            }
         }
-
         // 添加訊息到聊天
         function addMessage(message, sender) {
             const chatMessages = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
-            messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
+            
+            // 如果是 assistant 的訊息，解析 Markdown
+            if (sender === 'assistant') {
+                const htmlContent = marked.parse(message);
+                messageDiv.innerHTML = `<div class="message-bubble">${htmlContent}</div>`;
+            } else {
+                messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
+            }
+            
             chatMessages.appendChild(messageDiv);
             scrollToBottom();
         }
