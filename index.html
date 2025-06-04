@@ -286,13 +286,19 @@
                     <input type="date" id="registerDob" placeholder="yyyy/mm/dd" required>
                 </div>
                 <div class="form-group">
-                    <label>小朋友性別</label>
-                <div>
-                    <input type="radio" id="genderMale" name="registerGender" value="男" required>
-                    <label for="genderMale">男</label>
-                    <input type="radio" id="genderFemale" name="registerGender" value="女" required style="margin-left:15px;">
-                    <label for="genderFemale">女</label>
+                  <label>小朋友性別</label>
+                  <div style="display: flex; gap: 30px; align-items: center; margin-top: 5px;">
+                    <label style="display: flex; align-items: center; margin-bottom: 0;">
+                      <input type="radio" id="genderMale" name="registerGender" value="男" required style="margin-right: 6px;">
+                      男
+                    </label>
+                    <label style="display: flex; align-items: center; margin-bottom: 0;">
+                      <input type="radio" id="genderFemale" name="registerGender" value="女" required style="margin-right: 6px;">
+                      女
+                    </label>
+                  </div>
                 </div>
+
             </div>
 
                 <button class="btn" onclick="register()">註冊</button>
