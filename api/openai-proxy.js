@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   const { action, threadId, message, assistantId } = req.body;
   
   // 使用環境變數中的 OpenAI API 金鑰
-  const OPENAI_API_KEY = process.env.OPENAI_API_KEY || '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';
+  const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
   try {
     switch (action) {
