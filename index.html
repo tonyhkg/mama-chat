@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>媽媽 Wiki - 新手母親支援平台</title>
+    <title>媽媽 Chat - 新手母親支援平台</title>
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         * {
@@ -247,7 +247,7 @@
     <!-- 登入/註冊表單 -->
     <div class="container" id="authContainer">
         <div class="header">
-            <h1>💕 媽媽 Wiki</h1>
+            <h1>💕 媽媽 Chat</h1>
             <p>新手母親專屬的溫暖聊天空間</p>
         </div>
         <div class="content">
@@ -304,7 +304,7 @@
     <!-- 聊天介面 -->
     <div class="container chat-container hidden" id="chatContainer">
         <div class="header">
-            <h1>💕 媽媽 Wiki</h1>
+            <h1>💕 媽媽 Chat</h1>
             <p>我是您的育兒小助手，隨時為您提供支援</p>
         </div>
         <div class="user-info">
@@ -314,7 +314,7 @@
         <div class="chat-messages" id="chatMessages">
             <div class="message assistant">
                 <div class="message-bubble">
-                    👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
+                    👋 歡迎來到媽媽 Chat！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
                 </div>
             </div>
         </div>
@@ -558,7 +558,7 @@
             document.getElementById('chatMessages').innerHTML = `
                 <div class="message assistant">
                     <div class="message-bubble">
-                        👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
+                        👋 歡迎來到媽媽 Chat！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
                     </div>
                 </div>
             `;
@@ -790,12 +790,12 @@
                     });
                 } else {
                     // 沒有聊天記錄，顯示歡迎訊息
-                    addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
+                    addMessage('👋 歡迎來到媽媽 Chat！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
                 }
             } catch (error) {
                 console.error('載入聊天記錄時發生錯誤:', error);
                 // 如果載入失敗，顯示歡迎訊息
-                addMessage('👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
+                addMessage('👋 歡迎來到媽媽 Chat！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕', 'assistant');
 }
         }
 
@@ -804,80 +804,4 @@
             const chatMessages = document.getElementById('chatMessages');
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${sender}`;
-            messageDiv.innerHTML = `<div class="message-bubble">${message}</div>`;
-            chatMessages.appendChild(messageDiv);
-            scrollToBottom();
-        }
-
-        // 滾動到底部
-        function scrollToBottom() {
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        // 按 Enter 發送訊息
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') {
-                sendMessage();
-            }
-        }
-
-        // 初始化
-        document.addEventListener('DOMContentLoaded', async () => {
-            // 等待 Supabase 載入並初始化
-            let retryCount = 0;
-            const maxRetries = 10;
-            
-            const waitForSupabase = async () => {
-                while (retryCount < maxRetries) {
-                    if (typeof window.supabase !== 'undefined') {
-                        if (initSupabase()) {
-                            console.log('Supabase 初始化成功');
-                            break;
-                        }
-                    }
-                    retryCount++;
-                    console.log(`等待 Supabase 載入... (${retryCount}/${maxRetries})`);
-                    await new Promise(resolve => setTimeout(resolve, 200));
-                }
-                
-                if (retryCount >= maxRetries) {
-                    console.error('Supabase 載入失敗');
-                    document.getElementById('loginError').textContent = 'Supabase 載入失敗，請重新載入頁面';
-                    return;
-                }
-                
-                // Supabase 初始化成功後檢查認證狀態
-                await checkAuth();
-                
-                // 監聽認證狀態變化
-                if (supabaseClient) {
-                    supabaseClient.auth.onAuthStateChange(async (event, session) => {
-                        console.log('Auth state changed:', event, session);
-                        if (event === 'SIGNED_IN' && session?.user) {
-                            currentUser = session.user;
-                            await loadUserChatHistory();
-                            showChat();
-                            document.getElementById('userWelcome').textContent = `歡迎，${session.user.user_metadata?.name || session.user.email || '媽媽'}！`;
-                        } else if (event === 'SIGNED_OUT') {
-                            currentUser = null;
-                            currentThread = null;
-                            showAuth();
-                            // 重置聊天記錄
-                            document.getElementById('chatMessages').innerHTML = `
-                                <div class="message assistant">
-                                    <div class="message-bubble">
-                                        👋 歡迎來到媽媽 Wiki！我是您的專屬育兒助手。無論您遇到什麼育兒煩惱或需要情感支援，都可以和我分享。讓我們一起度過這個美好的育兒旅程吧！💕
-                                    </div>
-                                </div>
-                            `;
-                        }
-                    });
-                }
-            };
-            
-            await waitForSupabase();
-        });
-    </script>
-</body>
-</html>
+            messageDiv.innerHTML = `
